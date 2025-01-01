@@ -3,8 +3,6 @@ class Hand {
 		this.cards = new Array();
 		this.raised = false;
 		this.cardAnchor = new Coordinate(0,0);
-		
-		this.updateDimensions();
 	}
 
 	updateDimensions() {
@@ -13,9 +11,11 @@ class Hand {
 
 		this.cardAnchor.x = Math.round(stage.clientRect.width / 2);
 		this.cardAnchor.y = stage.clientRect.height;
+
+		//console.log("1: "+this.cardAnchor.x);
 	}
 
-	addCard(card) {
+	addCard(card) {		
 		if(card.handPos==-1) {
 			card.handPos = this.cards.length;
 		}
@@ -77,6 +77,8 @@ class Hand {
 				yOffset = Math.floor(this.cards[0].div.clientHeight / 2);
 
 			for (let i = 0; i < this.cards.length; i++) {
+				this.cards[i].div.style.zIndex=2+i;
+				//alert(this.cards[i].div.style.zIndex);
 				this.cards[i].moveToHand(new Coordinate(this.cardAnchor.x, this.cardAnchor.y+yOffset), i, this.cards.length);
 			}
 		}

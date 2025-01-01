@@ -18,7 +18,7 @@ class Deck {
 	}
 
 	onClick(e) {
-		cards[cards.length] = new Card();
+		cards[cards.length] = new Card(stage);
 		let card = cards[cards.length-1];
 		card.div.style.left = this.div.style.left;
 		card.div.style.top = this.div.style.top;
