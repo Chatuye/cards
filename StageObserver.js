@@ -5,11 +5,13 @@ class StageObserver {
 		this.callBack = callBack;
 
 		this.observer = new MutationObserver(this.onMutation.bind(this));
-
 		this.observer.observe(stage.div, { attributes: false, childList: true, characterData: false });
+
+		this.stage.div.appendChild(this.element.div);
 	}
 	
 	onMutation(mutations) {
+		//console.log(this.element.div.className+" "+"Mutations: "+mutations);
 		mutations.forEach(this.mutationHelper.bind(this));
 	}
 

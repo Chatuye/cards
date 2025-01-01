@@ -6,6 +6,8 @@ class Spot {
 		this.additionalInteractionPixels = 0;
 		this.hidden = true;
 
+		this.unit = null;
+
 		this.div = document.createElement("div");
 		this.div.className = "Spot";
 
@@ -35,6 +37,7 @@ class Spot {
 		let stageCenterX = Math.round(stage.clientRect.width/2);
 		let myMarginX = Math.round(0.05 * myWidth);
 		let fromCenter = myMarginX*2;
+
 		if(this.num%2==1) {
 			myLeft = stageCenterX - fromCenter - myWidth;
 		} else {
@@ -60,6 +63,13 @@ class Spot {
 		this.clientRect = this.div.getBoundingClientRect();
 		this.clientCenter.x = this.clientRect.left + (Math.floor(this.clientRect.width / 2))
 		this.clientCenter.y = this.clientRect.top + (Math.floor(this.clientRect.height / 2));
+
+		if(this.unit)this.updateUnitCoords();
+	}
+
+	updateUnitCoords() {
+		this.unit.div.style.left = this.div.style.left;
+		this.unit.div.style.top = this.div.style.top;
 	}
 
 	getClientDistance(coord) {

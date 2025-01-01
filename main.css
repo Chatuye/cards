@@ -26,7 +26,7 @@ div.Debug {
 div.Stage {
 	position : absolute;
 	z-index: 0;
-	
+/*	
 	top: 2em;
 	bottom: 2em;
 	left: 2em;
@@ -34,7 +34,7 @@ div.Stage {
 	
 	width: auto;
 	height: auto;
-
+*/
 	overflow:hidden;
 
 	background: rgba(29, 6, 50, 1);
@@ -51,7 +51,7 @@ div.Card {
 }
 
 div.Card:hover {
-	z-index: 3!important;
+	z-index: 99!important;
 /*
 	width: 235px!important;
 	height: 330px!important;

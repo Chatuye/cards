@@ -2,13 +2,12 @@ var debugDiv = null;
 var mainBody = null;
 var cards = new Array();
 var stage = null;
-var hand = null;
 var deck = null;
 var spots = null;
 
 var UIresizing = false;
 
-var card = { sourceWidth: 235, sourceHeight: 330, relHeight: 0.25, width: 0, height: 0}
+var card = { sourceWidth: 235, sourceHeight: 330, maxHeightRelToStage: 0.25, maxWidthRelToStage: 0.2, width: 0, height: 0}
 
 var draggedCard = null;
 
@@ -22,8 +21,9 @@ function onBodyLoad() {
 	debugDiv.innerHTML = "Body loading...";
 	
 	mainBody.appendChild(debugDiv);
-	
-	stage = new Stage(mainBody);
+	debugDiv.innerHTML = "CardStage initializing...";
+	stage = new CardStage(mainBody);
+	debugDiv.innerHTML = "CardStage loaded...";
 	deck = new Deck();
 	spots = new Array();
 	let numSpots = 6;
@@ -37,7 +37,6 @@ function onBodyLoad() {
 			if(Array.from(mutation.addedNodes).includes(stage.div)) {
 				stage.onObserve();
 				
-				hand = new Hand();
 				stage.appendAndObserve(deck, deck.onObserve.bind(deck));
 				for(let i=0; i<spots.length; i++)
 					stage.appendAndObserve(spots[i], spots[i].onObserve.bind(spots[i]));
@@ -50,13 +49,15 @@ function onBodyLoad() {
 	documentObserver.observe(mainBody, { attributes: false, childList: true, characterData: false });
 
 	mainBody.appendChild(stage.div);	
-	debugDiv.innerHTML = "Body successfully loaded.";
+	debugDiv.innerHTML = "Body successfully loaded. my-first-branch";
 }
 
 function onBodyResize() {
 	UIresizing = true;
+	
 	stage.updateDimensions();
-	hand.updateDimensions();
+	
+	/*
 	deck.updateDimensions();
 	for(let i=0; i<spots.length; i++) {
 		spots[i].updateDimensions();
@@ -69,8 +70,6 @@ function onBodyResize() {
 			cards[i].div.style.top = cards[i].onSpot.div.style.top;
 		}
 	}
-
-	hand.organizeCards();
-
+*/
 	UIresizing = false;
 }

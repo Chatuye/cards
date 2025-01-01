@@ -1,5 +1,5 @@
 class Card {
-	constructor() {
+	constructor(stage) {
 		this.div = null;
 		this.transitionAction = "none";
 		this.handPos = 0;
@@ -7,6 +7,8 @@ class Card {
 		this.cardSVG = null;
 		this.unitSVG = null;
 		this.mode = "card";
+
+		this.stage = stage;
 
 		this.interactionSpot = null;
 
@@ -85,7 +87,7 @@ class Card {
 		this.updateDimensions();
 
 		this.handPos = -1;
-		hand.addCard(this);
+		this.stage.hand.addCard(this);
 	};
 
 	updateDimensions() {
@@ -105,17 +107,15 @@ class Card {
 
 	getStageOffset() {
 		let offset = { left: 0, top: 0 };
+
 		let parentElement = this.div.parentElement;
 
 		while (parentElement != null) {
-			//console.log(parentElement.nodeName);
-			//console.log(parentElement.offsetTop);
 			offset.left += parentElement.offsetLeft;
 			offset.top += parentElement.offsetTop;
 			parentElement = parentElement.parentElement;
 		}
-		//console.log(offset.left);
-		//console.log(offset.top);
+		
 		return offset;
 	};
 
@@ -194,6 +194,8 @@ class Card {
 		}
 
 		for(let i=0; i<spots.length; i++) {
+			// false: um spots zurückzusetzen
+			// true: um einen spot zu highlighten
 			let t = spots[i] == this.interactionSpot;
 			spots[i].highlight(t);
 		}
@@ -202,6 +204,7 @@ class Card {
 	placeUnit() {
 		this.handPos = -1;
 		this.onSpot = this.interactionSpot;
+		this.onSpot.unit=this;
 		this.div.style.left = this.interactionSpot.div.style.left;
 //		this.div.style.right = this.interactionSpot.div.style.right;
 		this.div.style.top = this.interactionSpot.div.style.top;
@@ -209,14 +212,14 @@ class Card {
 	}
 
 	onMouseUp(e) {
-		if((!hand.raised)&&(this.interactionSpot!=null)) {
+		if((!this.stage.hand.raised)&&(this.interactionSpot!=null)) {
 			this.placeUnit();
-		} else if((hand.raised)&&(this.interactionSpot!=null)) {
+		} else if((this.stage.hand.raised)&&(this.interactionSpot!=null)) {
 			this.toggleMode("unit");
 			this.placeUnit();
 		} else {
 			this.toggleMode("card");
-			hand.addCard(this);
+			this.stage.hand.addCard(this);
 		}
 
 		this.hideSpots();
@@ -233,6 +236,7 @@ class Card {
 		e.preventDefault();
 
 		draggedCard = this;
+		if(this.onSpot)this.onSpot.unit = null;
 		this.onSpot = null;
 
 		this.div.style.transitionDuration = "0s";
@@ -240,7 +244,7 @@ class Card {
 		this.transitionAction = "drag";
 
 		if(this.handPos != -1) {
-			hand.removeCard(this);
+			this.stage.hand.removeCard(this);
 			this.showSpots();
 		} else {
 			this.showSpots();
